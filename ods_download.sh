@@ -1,9 +1,11 @@
 #! /bin/bash
+
 # script écrit par Christian Quest, sous licence WTFPL
 
 EXCLUSIONS="(public.opendatasoft|orthophoto)"
 FILETYPES="(jpg|jpeg|png|pdf|tif|zip|7z|tgz|taz|gz|rar|doc|docx|xls|xlsx|ppt|pptx|odt|ods|odp|gpkg)"
 MAXFILES=2000
+
 # domaine du portail OpenDataSoft à archiver
 ODS=$(echo $1 | sed 's!/!!g')
 

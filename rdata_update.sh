@@ -1,5 +1,9 @@
 #! /bin/bash
 
+# Archiveur de portail opendata rdata (GrandLyon)
+# script écrit par Christian Quest, sous licence WTFPL
+
+
 RDATA=$1
 IFS=$'\n'
 

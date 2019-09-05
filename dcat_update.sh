@@ -1,18 +1,22 @@
 #! /bin/bash
 
+# Script d'archivage des données publiées sur un portail CKAN
+# écrit par Christian Quest, sous licence WTFPL
+
 DCAT=$1
-IFS=$'\n'
-
-# décodage URL
-urldecode() { : "${*//+/ }"; echo -e "${_//%/\\x}"; }
-
-echo "$DCAT: $(date -Iseconds)"
 
 FORMAT_EXCLUDE="(OGC|REST|Web)"
 if [[ $DCAT =~ arcgis ]]
 then
   FORMAT_EXCLUDE="(OGC|REST|Web|KML|Shapefile|ArcGIS)"
 fi
+
+
+IFS=$'\n'
+# décodage URL
+urldecode() { : "${*//+/ }"; echo -e "${_//%/\\x}"; }
+
+echo "$DCAT: $(date -Iseconds)"
 
 mkdir -p data/$1/archives/CATALOGUE
 cd data/$1
@@ -77,4 +81,3 @@ do
   fi
 done
 echo "$DCAT: $(date -Iseconds) fin"
-

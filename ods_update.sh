@@ -1,4 +1,6 @@
 #! /bin/bash
+
+# Archiveur de portail opendata OpenDataSoft
 # script écrit par Christian Quest, sous licence WTFPL
 
 # liste des jeux de données à ne pas archiver (SPD, etc)
