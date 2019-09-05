@@ -2,7 +2,10 @@
 
 Ce projet a pour but de conserver une archive historisée des données #Opendata disponibles en France
 
-L'objectif est de conserver les versions successives du contenu des jeux de données et des méta-données les décrivant.
+L'objectif est de conserver les versions successives:
+- des méta-données décrivant chaque jeu de données,
+- **du contenu des jeux de données**,
+- des fichiers associés (pièces jointes, fichiers référencés, etc).
 
 Certains jeux de données peuvent être "repackagés" dans un autre format et/ou recompressés pour faciliter la réutilisation et/ou optimiser stockage et téléchargement.
 
@@ -42,11 +45,11 @@ Un article à lire sur https://medium.com/@cq94/opendatarchives-7f1707fb29aa
 
 github (code et issues): https://github.com/opendatarchives/opendatarchives
 
-Rester informé via twitter: @opendatarchives  -  https://twitter.com/opendatarchives 
+Rester informé via:
+- twitter: @opendatarchives  -  https://twitter.com/opendatarchives 
 
 sinon...
 
-Christian Quest
-email:    cquest@cquest.org
-mastodon: @cquest@amicale.net  -  https://amicale.net/@cquest
-twitter:  @cq94  -  https://twitter.com/cq94 
+- email:    cquest@cquest.org
+- mastodon: @cquest@amicale.net  -  https://amicale.net/@cquest
+- twitter:  @cq94  -  https://twitter.com/cq94 
