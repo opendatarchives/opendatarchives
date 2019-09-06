@@ -162,7 +162,7 @@ do
     if [ "$META_OLD" = "$FORCE$META_NEW" ]
     then
       echo "meta $ODS $ID $META : inchangé"
-      rm "archives/$ID/$META $ID$-meta.json"
+      rm "archives/$ID/$META $ID-meta.json"
     else
       echo "meta $ODS $ID $META : nouvelles"
       ln -f -s "archives/$ID/$META $ID-meta.json" "$ID-meta.json"
