@@ -183,15 +183,21 @@ do
     # lien symbolique existant et pointant vers une autre version des données ?
     if [ -f "$ID.csv.gz" ] && [ ! "$(readlink "$ID.csv.gz")" = "archives/$ID/$TIMESTAMP $ID.csv.gz" ]
     then
-      OLD=$(zcat "$ID.csv.gz" | csvsort -d ';' -z 500000 | md5sum)
-      NEW=$(zcat "archives/$ID/$TIMESTAMP $ID.csv.gz" | csvsort -d ';' -z 500000 | md5sum)
-      if [ "$OLD" = "$NEW" ]
+      # le contenu a-t-il changé ?
+      # on compare le nombre de lignes du CSV
+      if [ ! $(zcat "$ID.csv.gz" | wc -l) = $(zcat "archives/$ID/$TIMESTAMP $ID.csv.gz" | wc -l) ]
       then
-        echo "same $ODS $ID $TIMESTAMP csv"
-        exit
-        rm "archives/$ID/$TIMESTAMP $ID.csv.gz"
+        # puis son contenu complet
+        OLD=$(zcat "$ID.csv.gz" | sort | md5sum)
+        NEW=$(zcat "archives/$ID/$TIMESTAMP $ID.csv.gz" | sort | md5sum)
+        if [ "$OLD" = "$NEW" ]
+        then
+          echo "same $ODS $ID $TIMESTAMP csv"
+          rm "archives/$ID/$TIMESTAMP $ID.csv.gz"
+        fi
       fi
     fi
+
     if [ -f "archives/$ID/$TIMESTAMP $ID.csv.gz" ]
     then
       # création ou mise à jour du lien symbolique et des timestamp des fichiers
