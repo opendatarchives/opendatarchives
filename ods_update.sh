@@ -40,11 +40,11 @@ mv archives/CATALOGUE/.CATALOGUE.csv.gz "archives/CATALOGUE/$NOW CATALOGUE.csv.g
 ln -f -s "archives/CATALOGUE/$NOW CATALOGUE.csv.gz" CATALOGUE.csv.gz
 
 # liste des ID et date de dernier traitement (mise à jour) des données
-RSRC=$(zcat CATALOGUE.csv.gz | egrep -v "$EXCLUSIONS" | csvcut -c datasetid,data_processed,metadata_processed -d ';' -z 500000 - | grep ",2.*:00$" | sed 's/ /T/g' | sort)
+RSRC=$(zcat CATALOGUE.csv.gz | egrep -v "$EXCLUSIONS" | csvcut -c datasetid,federated,data_processed,metadata_processed -d ';' -z 500000 - | grep ",2.*:00$" | sed 's/ /T/g' | sort)
 echo "$ODS: $(echo $RSRC | sed 's/ /\n/g' | wc -l) jeux de données"
 for R in $RSRC
 do
-  read ID TIMESTAMP META <<< $( echo ${R} | awk -F"," '{print $1 " " $2 " " $3}' )
+  read ID FEDERATED TIMESTAMP META <<< $( echo ${R} | awk -F"," '{print $1 " " $2 " " $3 " " $4}' )
   OLDTIMESTAMP="_$TIMESTAMP"
   OLDMETA="_$META"
   TOUCH=$(date -d $(echo "$TIMESTAMP" +%Y%m%d%H%M.%S) || date -u +%Y%m%d%H%M.%S)
@@ -136,18 +136,16 @@ do
     touch -m -t $TOUCH "archives/$ID/$META $ID-meta.json"
   fi
   
-  # compression des fichiers qui avaient été chargés sans compression
-
-  if [ -f "archives/$ID/$TIMESTAMP $ID.csv" ]
+  # jeu de données "fédéré" provenant d'un autre portail/source
+  if [ "$FEDERATED" = "True" ] && [ -d "archives/$ID" ]
   then
-    echo "gzip $ID"
-    $GZIP "archives/$ID/$TIMESTAMP $ID.csv"
-    rm "$ID.csv"
-    # mise à jour du lien symbolique
-    ln -f -s "archives/$ID/$TIMESTAMP $ID.csv.gz" "$ID.csv.gz"
-    touch -m -t $TOUCH "$ID.csv.gz"
-    touch -m -t $TOUCH "archives/$ID/$TIMESTAMP $ID.csv.gz"
+    echo "meta $ODS $ID FEDERATED"
+    rm -rf "archives/$ID"
+    rm -f "$ID-meta.json" "$ID.csv.gz" "$ID.geojson.gz"
+    continue
   fi
+
+  mkdir -p "archives/$ID"
 
   # archivage des metadonnées JSON du jeu de données
   if [ ! -f "archives/$ID/$META $ID-meta.json" ]
