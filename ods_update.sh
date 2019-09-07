@@ -63,7 +63,7 @@ do
   mkdir -p "archives/$ID"
 
   # archivage des metadonnées JSON du jeu de données
-  if [ ! -f "archives/$ID/$META $ID-meta.json" ]
+  if [ ! -f "archives/$ID/$META $ID-meta.json" ] || [ ! -f "$ID-meta.json" ]
   then
 
     # json trié pour permettre les diff
