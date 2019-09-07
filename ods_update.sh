@@ -129,8 +129,8 @@ do
     if [ ! -f "archives/$ID/$TIMESTAMP $ID.geojson.gz" ]
     then
       echo "geo $ODS $ID $TIMESTAMP"
-      # download avec timestamp (pour ne charger que les jeux de données modifiés)
-      $CURL -f "https://$ODS/explore/dataset/$ID/download/?format=geojson&timezone=Europe/Berlin&use_labels_for_header=true" | $GZIP > "archives/$ID/$TIMESTAMP $ID.geojson.gz"
+      # download+tri avec timestamp (pour ne charger que les jeux de données modifiés)
+      $CURL -f "https://$ODS/explore/dataset/$ID/download/?format=geojson&timezone=Europe/Berlin&use_labels_for_header=true" | jq . -S | $GZIP > "archives/$ID/$TIMESTAMP $ID.geojson.gz"
 
     fi
     if [ -f "archives/$ID/$TIMESTAMP $ID.geojson.gz" ]
@@ -139,7 +139,7 @@ do
       if [ -f "$ID.geojson.gz" ] && [ ! "$(readlink "$ID.geojson.gz")" = "archives/$ID/$TIMESTAMP $ID.geojson.gz" ]
       then
         OLD=$(zcat "$ID.geojson.gz" | jq . -S | md5sum)
-        NEW=$(zcat "archives/$ID/$TIMESTAMP $ID.geojson.gz" | jq . -S | md5sum)
+        NEW=$(zcat "archives/$ID/$TIMESTAMP $ID.geojson.gz" | md5sum)
         # les données sont identiques, on supprime la "nouvelle version"
         if [ "$OLD" = "$NEW" ]
         then
