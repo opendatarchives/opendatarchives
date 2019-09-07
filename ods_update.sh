@@ -69,7 +69,7 @@ do
     # json trié pour permettre les diff
     $CURL -f "https://$ODS/api/datasets/1.0/$ID/" | jq . -S > "archives/$ID/$META $ID-meta.json"
 
-    # contrôle de changement réel des méta-données et pas que de metadata_processed
+    # contrôle de changement réel des méta-données et pas uniquement de metadata_processed
     META_OLD=$(jq -S . "$ID-meta.json" | grep -v 'metadata_processed' | md5sum)
     META_NEW=$(jq -S . "archives/$ID/$META $ID-meta.json" | grep -v 'metadata_processed' | md5sum)
     if [ "$META_OLD" = "$FORCE$META_NEW" ]
