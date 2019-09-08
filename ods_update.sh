@@ -29,7 +29,7 @@ cd $ODS
 
 # récupération du catalogue du portail
 
-$CURL  "https://$ODS/explore/download/" | $GZIP > archives/CATALOGUE/.CATALOGUE.csv.gz
+$CURL -f "https://$ODS/explore/download/" | $GZIP > archives/CATALOGUE/.CATALOGUE.csv.gz || exit
 
 # on ne fait le traitement que si il y a eu un changement
 LAST_PREV=$(zcat CATALOGUE.csv.gz | csvcut -d ';' -z 500000 -c modified,data_processed,metadata_processed | sed 's/,/\n/g;' | grep '^20' | sort | tail -n 1)
