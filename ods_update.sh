@@ -164,7 +164,7 @@ do
   for FILE in $FILES
   do
     mkdir -p "archives/$ID/attachments"
-    FILENAME=$(echo $FILE | jq -r .url | sed 's!odsfile://!!')
+    FILENAME=$(basename $(echo $FILE | jq -r .url | sed 's!odsfile://!!'))
     URL=$(echo $FILE | jq -r .id)
     if [ ! -f "archives/$ID/attachments/$FILENAME" ]
     then
