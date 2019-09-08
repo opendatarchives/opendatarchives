@@ -7,6 +7,7 @@
 EXCLUSIONS="(base.sirene|^registre.parcellaire.graphique|^geofla|base.adresse.nationale|^previsions-meteo-france-metropole|repertoire-national-des-elus|synop|prevision.*arome)"
 # force les mises à jour (laisser vide pour le mode normal)
 FORCE=""
+FEDERATED_BYPASS=0
 
 # domaine du portail OpenDataSoft à archiver
 ODS=$(echo $1 | sed 's!/!!g')
@@ -22,6 +23,9 @@ CURL='curl --compressed --insecure -sS '
 # dossier où seront archivées les données
 mkdir -p $ODS/archives/CATALOGUE
 cd $ODS
+
+# chargement de paramètres locaux à ce portail
+[ -f .params ] && source .params
 
 # récupération du catalogue du portail
 
@@ -52,11 +56,14 @@ do
   META=$(date -d "$META" -u +%Y%m%dT%H%M%SZ || date -u +%Y%m%dT%H%M%SZ)
   
   # jeu de données "fédéré" provenant d'un autre portail/source
-  if [ "$FEDERATED" = "True" ] && [ -d "archives/$ID" ]
+  if [ $FEDERATED_BYPASS = 0 ] && [ "$FEDERATED" = "True" ]
   then
-    echo "meta $ODS $ID FEDERATED"
-    rm -rf "archives/$ID"
-    rm -f "$ID-meta.json" "$ID.csv.gz" "$ID.geojson.gz"
+    if [ -d "archives/$ID" ]
+    then
+      echo "meta $ODS $ID FEDERATED"
+      rm -rf "archives/$ID"
+      rm -f "$ID-meta.json" "$ID.csv.gz" "$ID.geojson.gz"
+    fi
     continue
   fi
 
