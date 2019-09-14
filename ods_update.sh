@@ -145,8 +145,8 @@ do
       # lien symbolique existant et pointant vers une autre version des données ?
       if [ -f "$ID.geojson.gz" ] && [ ! "$(readlink "$ID.geojson.gz")" = "archives/$ID/$TIMESTAMP $ID.geojson.gz" ]
       then
-        OLD=$(zcat "$ID.geojson.gz" | jq . -S | md5sum)
-        NEW=$(zcat "archives/$ID/$TIMESTAMP $ID.geojson.gz" | md5sum)
+        OLD=$(zcat "$ID.geojson.gz" | jq .features[] -c -S | sort | md5sum)
+        NEW=$(zcat "archives/$ID/$TIMESTAMP $ID.geojson.gz" | jq .features[] -c -S | sort | md5sum)
         # les données sont identiques, on supprime la "nouvelle version"
         if [ "$OLD" = "$NEW" ]
         then
