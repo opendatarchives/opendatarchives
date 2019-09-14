@@ -17,7 +17,7 @@ NOW=$(date +%Y%m%dT%H%M%SZ)
 
 WGET='wget -nc '
 GZIP='pigz -9 --rsyncable '
-CURL='curl --compressed --insecure -sS '
+CURL='curl -f --compressed --insecure -sS '
 
 #IFS=$'\n'
 # dossier où seront archivées les données
