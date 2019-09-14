@@ -188,4 +188,4 @@ cd - > /dev/null
 echo "$ODS: fin"
 
 # renommage global des fichiers
-bash ods_rename.sh $ODS
+#bash ods_rename.sh $ODS
