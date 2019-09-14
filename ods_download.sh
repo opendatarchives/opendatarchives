@@ -23,7 +23,6 @@ do
   do
     mkdir -p "$ODS/archives/$ID/files"
     # fichier local au portail, le détail n'est dispo qu'en json
-    echo "json $ODS > $ID >> $F > $FILENAME"
     curl --compressed --insecure -sS "https://$ODS/explore/dataset/$ID/download/?format=json&timezone=Europe/Berlin" | jq .[].fields.$F -c | egrep -v "(null|^$)" | egrep -v "$EXCLUSIONS" | sort -u > $ODS/.dl
     NB=$(cat $ODS/.dl | wc -l)
     echo "$ODS > $ID >> $F -> TOTAL $NB"
@@ -45,7 +44,7 @@ do
   done
 
   # nom du champ contenant le lien vers un fichier externe
-  FIELDS=$(jq -c .fields[] "$ODS/$ID-meta.json" | egrep '"(url|Fichier)"' | jq .label -r)
+  FIELDS=$(jq -c .fields[] "$ODS/$ID-meta.json" | egrep -i '"(url|Fichier)"' | jq .label -r)
   for F in $FIELDS
   do
     mkdir -p "$ODS/archives/$ID/files"
