@@ -28,8 +28,9 @@ then
   jq -s -S "archives/CATALOGUE/.CATALOGUE.json" | gzip -9 > "archives/CATALOGUE/$NOW CATALOGUE.json.gz"
   rm -f "archives/CATALOGUE/.CATALOGUE.json"
 else
-  gzip -9 "archives/CATALOGUE/.CATALOGUE.json"
-  mv "archives/CATALOGUE/.CATALOGUE.json.gz" "archives/CATALOGUE/$NOW CATALOGUE.json.gz"
+  mv "archives/CATALOGUE/.CATALOGUE.json" "archives/CATALOGUE/CATALOGUE.json"
+  gzip -9 "archives/CATALOGUE/CATALOGUE.json"
+  mv "archives/CATALOGUE/CATALOGUE.json.gz" "archives/CATALOGUE/$NOW CATALOGUE.json.gz"
 fi
 
 # les metadonnées ont-elles changé ?
